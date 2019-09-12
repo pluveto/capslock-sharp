@@ -1,0 +1,72 @@
+using System;
+using System.Linq;
+using System.Runtime.InteropServices;
+using CapsLockSharpPrototype.Helper;
+using static CapsLockSharpPrototype.Helper.GlobalKeyboardHook;
+using static CapsLockSharpPrototype.Helper.KeyDefRuntime;
+
+namespace CapsLockSharpPrototype.Runtime
+{
+    // 啊，我这代码简直完美！！！
+    public class Controller
+    {
+        [DllImport("user32.dll", EntryPoint = "keybd_event", SetLastError = true)]
+        public static extern void SendKeyEvent(int bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
+        private void OnAdditionKeyStateChanged(KeyDef keyDef, GlobalKeyboardHookEventArgs e)
+        {
+            if (e.KeyboardState == KeyboardState.KeyUp || !_status.PressingCapsLock) return;
+            SendKeySimulatedAndSetStatus(ref _status.ReleasingCapsLockSimulated, false, VirtualKey.CapsLock);
+            SendKeyEvent((int)keyDef.AdditionKey, 0, 2, UIntPtr.Zero);
+            SendKeyEvent((int)keyDef.ReplacingKey, 0, 0, UIntPtr.Zero);
+            e.Handled = true;
+        }
+        private void SendKeySimulatedAndSetStatus(ref bool doingMark, bool press, VirtualKey key)
+        {
+            doingMark = true;
+            SendKeyEvent((int)key, 0, (uint)(press ? 0 : 2), UIntPtr.Zero);
+            doingMark = false;
+        }
+        struct Status
+        {
+            public bool PressingCapsLock;
+            public bool PressingCapsLockSimulated;
+            public bool ReleasingCapsLockSimulated;
+        }
+        private Status _status = new Status();
+        private GlobalKeyboardHook _globalKeyboardHook = new GlobalKeyboardHook();
+        public void SetupKeyboardHooks()
+        {
+            _globalKeyboardHook.KeyboardEvent += OnKeyStateChanged;
+        }
+        private void OnKeyStateChanged(object sender, GlobalKeyboardHookEventArgs e)
+        {
+            if ((VirtualKey)e.KeyboardData.VirtualCode == VirtualKey.CapsLock)
+                OnKeyCapsLockChanged(e);
+            else
+                OnKeyExceptCapsLockChanged(e);
+        }
+        private void OnKeyCapsLockChanged(GlobalKeyboardHookEventArgs e)
+        {
+            if (e.KeyboardState == KeyboardState.KeyDown)
+            {
+                if (_status.PressingCapsLockSimulated) return;
+                _status.PressingCapsLock = true;
+                e.Handled = true;
+            }
+            else
+            {
+                if (_status.ReleasingCapsLockSimulated) return;
+                SendKeySimulatedAndSetStatus(ref _status.PressingCapsLockSimulated, true, VirtualKey.CapsLock);                
+                SendKeySimulatedAndSetStatus(ref _status.ReleasingCapsLockSimulated, false, VirtualKey.CapsLock);
+                _status.PressingCapsLock = false;
+                e.Handled = true;
+            }
+        }
+        private void OnKeyExceptCapsLockChanged(GlobalKeyboardHookEventArgs e)
+        {
+            var keyDef = KeyDefs.FirstOrDefault(x => x.AdditionKey == (VirtualKey)e.KeyboardData.VirtualCode);
+            if (keyDef.Equals(default(KeyDef))) return;
+            OnAdditionKeyStateChanged(keyDef, e);
+        }
+    }
+}

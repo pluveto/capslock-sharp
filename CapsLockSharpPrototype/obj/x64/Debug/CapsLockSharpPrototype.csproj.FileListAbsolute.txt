@@ -1,0 +1,11 @@
+E:\Development\C#\Projects\CapsLockSharpPrototype\CapsLockSharpPrototype\obj\x64\Debug\CapsLockSharpPrototype.About.resources
+E:\Development\C#\Projects\CapsLockSharpPrototype\CapsLockSharpPrototype\obj\x64\Debug\CapsLockSharpPrototype.MainForm.resources
+E:\Development\C#\Projects\CapsLockSharpPrototype\CapsLockSharpPrototype\obj\x64\Debug\CapsLockSharpPrototype.Properties.Resources.resources
+E:\Development\C#\Projects\CapsLockSharpPrototype\CapsLockSharpPrototype\obj\x64\Debug\CapsLockSharpPrototype.csproj.GenerateResource.cache
+E:\Development\C#\Projects\CapsLockSharpPrototype\CapsLockSharpPrototype\obj\x64\Debug\CapsLockSharpPrototype.csproj.CoreCompileInputs.cache
+E:\Development\C#\Projects\CapsLockSharpPrototype\CapsLockSharpPrototype\obj\x64\Debug\CapsLockSharpPrototype.csprojAssemblyReference.cache
+E:\Development\C#\Projects\CapsLockSharpPrototype\CapsLockSharpPrototype\bin\x64\Debug\Caplos.exe.config
+E:\Development\C#\Projects\CapsLockSharpPrototype\CapsLockSharpPrototype\bin\x64\Debug\Caplos.exe
+E:\Development\C#\Projects\CapsLockSharpPrototype\CapsLockSharpPrototype\bin\x64\Debug\Caplos.pdb
+E:\Development\C#\Projects\CapsLockSharpPrototype\CapsLockSharpPrototype\obj\x64\Debug\Caplos.exe
+E:\Development\C#\Projects\CapsLockSharpPrototype\CapsLockSharpPrototype\obj\x64\Debug\Caplos.pdb
